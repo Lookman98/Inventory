@@ -1,0 +1,81 @@
+﻿@model Inventory.Models.Barang.BarangViewModel
+@{
+    ViewData["Title"] = "Barang";
+}
+<form asp-controller="Barang" asp-action="Index" method="post">
+    <p>
+
+        @*<select asp-for="MovieGenre" asp-items="Model.Genres">
+            <option value="">All</option>
+        </select>*@
+        <div class="row pb-5">
+            <div class="col-1">
+                <a href="Create">
+                    <input type="button" class=" btn btn-primary" value="Add" />
+                </a>
+            </div>
+            <div class="col-10 align-items-lg-end">
+                 Search Name <input type="text" name="SearchString"/>
+                <input type="submit" value="Filter"/>
+            </div>
+            
+           
+        </div>
+       
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Barangs[0].Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Barangs[0].IdStesen)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Barangs[0].IdDaerah)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Barangs[0].TarikhSerah)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Barangs[0].TarikhTerima)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Barangs[0].TarikhTamat)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Barangs)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdStesen)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdDaerah)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TarikhSerah)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TarikhTerima)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TarikhTamat)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdBarang">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdBarang">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdBarang">Delete</a>
+            </td>
+        </tr>}
+    </tbody>
+</table>

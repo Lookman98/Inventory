@@ -1,0 +1,123 @@
+﻿@model Inventory.Models.Barang.Barang
+
+@{
+    SelectList daerahList = new SelectList(ViewBag.daerahList, "IdDaerah", "Name");
+    //SelectList stesenList = new SelectList(ViewBag.IdStesen, "IdStesen", "Name");
+
+    ViewData["Title"] = "Log in";
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-12">
+        <section>
+            <form id="createForm" asp-action="Create" class="m-form m-form--label-align-right m-form--state" enctype="multipart/form-data">
+
+                <div class="form-group m-form__group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Name :
+                    </label>
+                    <div class="col-lg-5 col-md-9 col-sm-12">
+                        <input asp-for="Name" class="form-control m-input m-input--air">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Daerah :
+                    </label>
+                    <div class="col-lg-5 col-md-9 col-sm-12">
+                        <select id="ddDaerah"
+                                asp-for="IdDaerah"
+                                asp-items=daerahList
+                                class="form-control m-input m-input--air">
+                            <option>Select Daerah</option>
+                        </select>
+                        <span asp-validation-for="IdDaerah" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Stesen :
+                    </label>
+                    <div class="col-lg-5 col-md-9 col-sm-12">
+                        <select id="ddStesen"
+                                asp-for="IdStesen"
+                                class="form-control m-input m-input--air">
+                            <option>Select Stesen</option>
+                        </select>
+                        <span asp-validation-for="IdStesen" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group m-form__group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Warranty :
+                    </label>
+                    <div class="col-lg-5 col-md-9 col-sm-12">
+                        <input asp-for="Warranty" class="form-control m-input m-input--air">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Tarikh Terima :
+                    </label>
+                    <div class="col-lg-5 col-md-9 col-sm-12">
+                        <input asp-for="TarikhTerima" class="form-control m-input m-input--air">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Tarikh Serah :
+                    </label>
+                    <div class="col-lg-5 col-md-9 col-sm-12">
+                        <input asp-for="TarikhSerah" class="form-control m-input m-input--air">
+                    </div>
+                </div>
+                <div class="form-group m-form__group row">
+                    <label class="col-form-label col-lg-3 col-sm-12">
+                        Tarikh Tamat :
+                    </label>
+                    <div class="col-lg-5 col-md-9 col-sm-12">
+                        <input asp-for="TarikhTamat" class="form-control m-input m-input--air">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="onSave">Save</button>
+            </form>
+        </section>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script>
+
+        $('#ddDaerah').change(function () {
+            var url = "/barang/GetStesenList";
+            var idDaerah = $("#ddDaerah option:selected").val();
+            //console.log("Daerah" + idDaerah);
+            $.ajax({
+                method: "Post",
+                url: url,
+                data: { IdDaerah: idDaerah },
+                type: "json",
+                cache: false,
+            }).done(function (data) {
+
+                var jsonData = JSON.parse(data);
+                var s = '<option value="">Select Stesen</option>';
+                for (var i = 0; i < jsonData.length; i++) {
+                    s += '<option value="' + jsonData[i].IdStesen + '">' + jsonData[i].Name + '</option>';
+                }
+                $("#ddStesen").html(s);
+            })
+
+        });
+
+
+        function onSave() {
+            $("#createForm").submit();
+        }
+    </script>
+}

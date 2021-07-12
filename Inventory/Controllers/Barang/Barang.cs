@@ -144,10 +144,35 @@ namespace Inventory.Controllers.Barang
             }
         }
 
-        // GET: Barnag/Delete/5
-        public ActionResult Delete(int id)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            return View();
+            var barang = await _context.Barang.FindAsync(id);
+            _context.Barang.Remove(barang);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool MovieExists(Guid id)
+        {
+            return _context.Barang.Any(e => e.IdBarang == id);
+        }
+
+        // GET: Barnag/Delete/5
+        public ActionResult Delete(Guid id)
+        {
+            try
+            {
+                var barang = _context.Barang.Find(id);
+                _context.Barang.Remove(barang);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         // POST: Barnag/Delete/5
@@ -157,6 +182,9 @@ namespace Inventory.Controllers.Barang
         {
             try
             {
+                var barang = _context.Barang.Find(id);
+                _context.Barang.Remove(barang);
+                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
